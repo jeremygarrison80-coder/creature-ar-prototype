@@ -23,7 +23,9 @@
   </a>
 
   <p class="hint" id="hint">Tap <b>VIEW IN AR</b>, then point your iPhone at a table or the floor.</p>
-  <a class="app-battle" href="embergill://battle?creature=CREATURE-002">⚔️ BATTLE IN THE APP</a>
+  <a class="app-battle" id="appBattle" href="embergill://battle?creature=CREATURE-002">⚔️ BATTLE IN THE APP</a>
+  <p class="app-missing" id="appMissing" hidden>Creature Kombat isn't installed on this iPhone yet.
+    Connect this iPhone to the Mac with a cable so the app can be installed, then tap again.</p>
   <p class="app-note">Opens Creature Kombat with Bramblehorn and connects to the other player's iPhone automatically.</p>
   <p class="desc">A chunky little forest dino whose antlers bloom in spring. Swings a spiky club tail and smells faintly of moss.</p>
 
@@ -77,6 +79,15 @@
       btn.textContent = "ROLL AGAIN";
       document.getElementById("result").scrollIntoView({behavior: "smooth", block: "center"});
     }, 1300);
+  });
+
+  // If the app isn't installed, the embergill:// link silently fails: after a moment the page is still
+  // showing, so explain instead of leaving the player stuck.
+  document.getElementById("appBattle").addEventListener("click", function () {
+    var t = setTimeout(function () {
+      if (!document.hidden) document.getElementById("appMissing").hidden = false;
+    }, 1600);
+    document.addEventListener("visibilitychange", function () { if (document.hidden) clearTimeout(t); }, {once: true});
   });
 
   // AR Quick Look needs iPhone/iPad Safari. Elsewhere, say so instead of silently downloading a file.
