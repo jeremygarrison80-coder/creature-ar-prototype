@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Embergill · CREATURE-001</title>
+<meta name="theme-color" content="#120e2b">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body style="--accent:#16b8c8">
+<main class="card">
+  <p class="id">CREATURE-001</p>
+  <h1>Embergill</h1>
+  <p class="meta"><span>Water / Fire</span><span>Rare</span><span>6 in tall</span></p>
+
+  <!-- Tapping the creature also opens AR (Safari requires an <a rel="ar"> that wraps an image) -->
+  <a class="hero" rel="ar" href="../../assets/creature.usdz#allowsContentScaling=0">
+    <img src="../../assets/creature-preview.png" alt="Embergill, a colorful baby sea-dragon" width="512" height="512">
+  </a>
+
+  <a class="ar-button" rel="ar" href="../../assets/creature.usdz#allowsContentScaling=0">
+    <img src="../../assets/view-in-ar.png" alt="VIEW IN AR" width="320" height="75">
+  </a>
+
+  <p class="hint" id="hint">Tap <b>VIEW IN AR</b>, then point your iPhone at a table or the floor.</p>
+  <p class="desc">A chubby baby sea-dragon whose glowing gill fronds flicker like embers underwater. Loves warm rocks and shiny pebbles.</p>
+</main>
+<script>
+  // AR Quick Look needs iPhone/iPad Safari. Elsewhere, say so instead of silently downloading a file.
+  var a = document.createElement("a");
+  if (!(a.relList && a.relList.supports && a.relList.supports("ar"))) {
+    document.getElementById("hint").innerHTML =
+      "Open this page on an <b>iPhone</b> (Safari) to see Embergill in AR.";
+    document.body.classList.add("no-ar");
+  }
+</script>
+</body>
+</html>
