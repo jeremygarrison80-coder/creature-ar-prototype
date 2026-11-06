@@ -24,8 +24,59 @@
 
   <p class="hint" id="hint">Tap <b>VIEW IN AR</b>, then point your iPhone at a table or the floor.</p>
   <p class="desc">A chubby baby sea-dragon whose glowing gill fronds flicker like embers underwater. Loves warm rocks and shiny pebbles.</p>
+
+  <section class="battle">
+    <h2>🎲 Battle Roll</h2>
+    <p class="sub">Roll two dice. The total decides Embergill's move.</p>
+    <div class="dice" aria-live="polite">
+      <div class="die" id="d1"><div class="face f1"><i class="pip" style="grid-area:2/2"></i></div><div class="face f2"><i class="pip" style="grid-area:1/3"></i><i class="pip" style="grid-area:3/1"></i></div><div class="face f3"><i class="pip" style="grid-area:1/3"></i><i class="pip" style="grid-area:2/2"></i><i class="pip" style="grid-area:3/1"></i></div><div class="face f4"><i class="pip" style="grid-area:1/1"></i><i class="pip" style="grid-area:1/3"></i><i class="pip" style="grid-area:3/1"></i><i class="pip" style="grid-area:3/3"></i></div><div class="face f5"><i class="pip" style="grid-area:1/1"></i><i class="pip" style="grid-area:1/3"></i><i class="pip" style="grid-area:2/2"></i><i class="pip" style="grid-area:3/1"></i><i class="pip" style="grid-area:3/3"></i></div><div class="face f6"><i class="pip" style="grid-area:1/1"></i><i class="pip" style="grid-area:1/3"></i><i class="pip" style="grid-area:2/1"></i><i class="pip" style="grid-area:2/3"></i><i class="pip" style="grid-area:3/1"></i><i class="pip" style="grid-area:3/3"></i></div></div>
+      <div class="die" id="d2"><div class="face f1"><i class="pip" style="grid-area:2/2"></i></div><div class="face f2"><i class="pip" style="grid-area:1/3"></i><i class="pip" style="grid-area:3/1"></i></div><div class="face f3"><i class="pip" style="grid-area:1/3"></i><i class="pip" style="grid-area:2/2"></i><i class="pip" style="grid-area:3/1"></i></div><div class="face f4"><i class="pip" style="grid-area:1/1"></i><i class="pip" style="grid-area:1/3"></i><i class="pip" style="grid-area:3/1"></i><i class="pip" style="grid-area:3/3"></i></div><div class="face f5"><i class="pip" style="grid-area:1/1"></i><i class="pip" style="grid-area:1/3"></i><i class="pip" style="grid-area:2/2"></i><i class="pip" style="grid-area:3/1"></i><i class="pip" style="grid-area:3/3"></i></div><div class="face f6"><i class="pip" style="grid-area:1/1"></i><i class="pip" style="grid-area:1/3"></i><i class="pip" style="grid-area:2/1"></i><i class="pip" style="grid-area:2/3"></i><i class="pip" style="grid-area:3/1"></i><i class="pip" style="grid-area:3/3"></i></div></div>
+    </div>
+    <button class="roll" id="roll" type="button">ROLL THE DICE</button>
+    <div class="result" id="result" hidden>
+      <p class="total" id="total"></p>
+      <p class="move" id="move"></p>
+      <p class="movetext" id="movetext"></p>
+      <a class="ar-result" rel="ar" data-action="fireball" href="../../assets/actions/fireball.usdz#allowsContentScaling=0" hidden><img src="../../assets/actions/btn-fireball.png" alt="See Fireball in AR"></a><a class="ar-result" rel="ar" data-action="shield" href="../../assets/actions/shield.usdz#allowsContentScaling=0" hidden><img src="../../assets/actions/btn-shield.png" alt="See Shield in AR"></a><a class="ar-result" rel="ar" data-action="jump" href="../../assets/actions/jump.usdz#allowsContentScaling=0" hidden><img src="../../assets/actions/btn-jump.png" alt="See Jump in AR"></a><a class="ar-result" rel="ar" data-action="roar" href="../../assets/actions/roar.usdz#allowsContentScaling=0" hidden><img src="../../assets/actions/btn-roar.png" alt="See Roar in AR"></a><a class="ar-result" rel="ar" data-action="run_attack" href="../../assets/actions/run_attack.usdz#allowsContentScaling=0" hidden><img src="../../assets/actions/btn-run_attack.png" alt="See Run Attack in AR"></a>
+    </div>
+    <details class="moves">
+      <summary>All moves &amp; dice table</summary>
+      <div class="grid"><a rel="ar" href="../../assets/actions/fireball.usdz#allowsContentScaling=0"><img src="../../assets/actions/tile-fireball.png" alt="Fireball"></a><a rel="ar" href="../../assets/actions/shield.usdz#allowsContentScaling=0"><img src="../../assets/actions/tile-shield.png" alt="Shield"></a><a rel="ar" href="../../assets/actions/jump.usdz#allowsContentScaling=0"><img src="../../assets/actions/tile-jump.png" alt="Jump"></a><a rel="ar" href="../../assets/actions/roar.usdz#allowsContentScaling=0"><img src="../../assets/actions/tile-roar.png" alt="Roar"></a><a rel="ar" href="../../assets/actions/run_attack.usdz#allowsContentScaling=0"><img src="../../assets/actions/tile-run_attack.png" alt="Run Attack"></a></div>
+    </details>
+  </section>
 </main>
 <script>
+  var ACTIONS = [{"id": "fireball", "name": "Fireball", "emoji": "🔥", "rolls": [6, 7, 8], "text": "Embergill inhales and blasts a blazing fireball!"}, {"id": "shield", "name": "Shield", "emoji": "🛡️", "rolls": [4, 5], "text": "A shimmering bubble shield snaps up around Embergill."}, {"id": "jump", "name": "Jump", "emoji": "🦘", "rolls": [9, 10], "text": "Embergill springs into the air with a front flip!"}, {"id": "roar", "name": "Roar", "emoji": "📣", "rolls": [2, 3], "text": "A rare, earth-shaking ROAR! Shock waves everywhere."}, {"id": "run_attack", "name": "Run Attack", "emoji": "⚡", "rolls": [11, 12], "text": "CRITICAL! Embergill charges in with a lightning slash!"}];
+  // ---- dice: each die is a 3D cube; we spin it and land on the rolled face
+  var FACE = {1: [0, 0], 2: [0, -90], 3: [-90, 0], 4: [90, 0], 5: [0, 90], 6: [0, 180]};
+  var spins = [0, 0];
+  function d6() { var a = new Uint32Array(1); crypto.getRandomValues(a); return 1 + (a[0] % 6); }
+  function land(el, i, v) {
+    spins[i] += 2 + Math.floor(Math.random() * 2);
+    var f = FACE[v];
+    el.style.transform = "rotateX(" + (f[0] + 360 * spins[i]) + "deg) rotateY(" + (f[1] + 360 * spins[i]) + "deg)";
+  }
+  document.getElementById("roll").addEventListener("click", function () {
+    var btn = this, a = d6(), b = d6(), total = a + b;
+    btn.disabled = true;
+    document.getElementById("result").hidden = true;
+    land(document.getElementById("d1"), 0, a);
+    land(document.getElementById("d2"), 1, b);
+    setTimeout(function () {
+      var act = ACTIONS.find(function (x) { return x.rolls.indexOf(total) >= 0; });
+      document.getElementById("total").textContent = a + " + " + b + " = " + total;
+      document.getElementById("move").textContent = act.emoji + " " + act.name.toUpperCase() + "!";
+      document.getElementById("movetext").textContent = act.text;
+      document.querySelectorAll(".result .ar-result").forEach(function (el) {
+        el.hidden = el.dataset.action !== act.id;
+      });
+      document.getElementById("result").hidden = false;
+      btn.disabled = false;
+      btn.textContent = "ROLL AGAIN";
+      document.getElementById("result").scrollIntoView({behavior: "smooth", block: "center"});
+    }, 1300);
+  });
+
   // AR Quick Look needs iPhone/iPad Safari. Elsewhere, say so instead of silently downloading a file.
   var a = document.createElement("a");
   if (!(a.relList && a.relList.supports && a.relList.supports("ar"))) {
